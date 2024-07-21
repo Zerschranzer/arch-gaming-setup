@@ -38,7 +38,7 @@ install_kde() {
     sudo pacman -S --needed --noconfirm xorg sddm
     sudo systemctl enable sddm
 
-    sudo pacman -S --noconfirm plasma-desktop dolphin konsole systemsettings plasma-pa plasma-nm kscreen kde-gtk-config breeze-gtk powerdevil sddm-kcm kwalletmanager
+    sudo pacman -S --noconfirm plasma-desktop dolphin konsole systemsettings plasma-pa plasma-nm kscreen kde-gtk-config breeze-gtk powerdevil sddm-kcm kwalletmanager kio-admin
 
     sudo systemctl enable NetworkManager
 }
@@ -74,7 +74,7 @@ main_installation() {
         libxinerama lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader \
         libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 \
         gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader \
-        obs-studio discord flatpak mangohud lib32-mangohud goverlay gamescope solaar kate kio-admin
+        obs-studio discord flatpak mangohud lib32-mangohud goverlay gamescope solaar kate
 
     echo "Installing AUR packages with yay..."
     yay -S --noconfirm \
