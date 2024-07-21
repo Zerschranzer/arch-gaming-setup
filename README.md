@@ -6,9 +6,9 @@ An interactive Bash script to automate the setup of an Arch Linux system for gam
 
 - Enables multilib repository
 - Installs Yay AUR helper
-- Offers installation of AMD or NVIDIA GPU drivers
+- Offers installation of AMD or NVIDIA GPU drivers and tools
 - Optional KDE Plasma desktop environment installation
-- Installs popular gaming software and utilities (Steam, Lutris, Wine, etc.)
+- Installs popular gaming software and utilities (Steam, Lutris, Wine, GE-Proton, Mangohud, vkbasalt, etc.)
 - Optional Pamac package manager installation
 - Configures system for optimal gaming performance
 
