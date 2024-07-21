@@ -172,7 +172,7 @@ fi
 echo -e "${GREEN}Script completed succesfully. Do you want to restart your system to apply all changes now?(y/n)${NC}"
 read -r restart_response
 if [[ "$restart_response" =~ ^[Yy]$ ]]; then
-    pamac_installation
+    sudo reboot now
 else
     echo -e "${RED}No restart selected${NC}"
 fi
