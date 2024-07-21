@@ -10,6 +10,7 @@ An interactive Bash script to automate the setup of an Arch Linux system for gam
 - Optional KDE Plasma desktop environment installation
 - Installs popular gaming software and utilities (Steam, Lutris, Wine, GE-Proton, Mangohud, vkbasalt, etc.)
 - Optional Pamac package manager installation
+- Installs liquorix kernel
 - Configures system for optimal gaming performance
 
 This script allows users to easily transform a fresh Arch Linux installation into a gaming-ready system with just a few interactive prompts. It's designed to be user-friendly while still offering customization options.
