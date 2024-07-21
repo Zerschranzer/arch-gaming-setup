@@ -124,12 +124,12 @@ sudo pacman -Syyu --noconfirm
 install_yay
 
 # Ask about AMD installation
-echo "Do you want to install AMD GPU drivers? (y/n)"
+echo -e "${YELLOW}Do you want to install AMD GPU drivers? (y/n)${NC}"
 read -r amd_response
 if [[ "$amd_response" =~ ^[Yy]$ ]]; then
     install_amd
 else
-    echo "AMD GPU installation skipped."
+    echo -e "${RED}AMD GPU installation skipped.${NC}"
 fi
 
 # Ask about Nvidia installation
