@@ -44,10 +44,11 @@ install_kde() {
 }
 
 install_amd() {
-    echo "Installing AMD GPU drivers"
+    echo "Installing AMD GPU drivers and tools"
     # Install AMD drivers and tools
     sudo pacman -S --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader
-}
+    yay -S --noconfirm lact
+    }
 
 install_nvidia() {
     echo "Installing Nvidia GPU drivers"
@@ -77,7 +78,7 @@ main_installation() {
 
     echo "Installing AUR packages with yay..."
     yay -S --noconfirm \
-        vkbasalt lib32-vkbasalt proton-ge-custom-bin xone-dkms lact dxvk-bin
+        vkbasalt lib32-vkbasalt proton-ge-custom-bin xone-dkms dxvk-bin
 
     echo "Main installation completed."
 }
