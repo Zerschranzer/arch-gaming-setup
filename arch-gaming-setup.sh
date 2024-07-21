@@ -1,5 +1,11 @@
 #!/bin/bash
 
+RED='\033[1;31m'        # ${RED}
+YELLOW='\033[1;33m'    # ${YELLOW}
+GREEN='\033[1;32m'    # ${GREEN}
+NC='\033[0m'         # ${NC}
+
+
 set -e
 
 # Function to check and enable multilib repository
@@ -98,12 +104,12 @@ pamac_installation() {
 }
 
 # Main program
-echo "This script will configure your system for gaming and install software."
-echo "Please make sure you have a backup of your important data."
-echo "Do you want to proceed? (y/n)"
+echo -e "${YELLOW}This script will configure your system for gaming and install software.${NC}"
+echo -e "${YELLOW}Please make sure you have a backup of your important data.${NC}"
+echo -e  "${YELLOW}Do you want to proceed? (y/n)${NC}"
 read -r response
 if [[ ! "$response" =~ ^[Yy]$ ]]; then
-    echo "Installation aborted."
+    echo -e "${RED}Installation aborted.${NC}"
     exit 1
 fi
 
@@ -127,39 +133,46 @@ else
 fi
 
 # Ask about Nvidia installation
-echo "Do you want to install Nvidia GPU drivers? (y/n)"
+echo -e "${YELLOW}Do you want to install Nvidia GPU drivers? (y/n)${NC}"
 read -r nvidia_response
 if [[ "$nvidia_response" =~ ^[Yy]$ ]]; then
     install_nvidia
 else
-    echo "Nvidia GPU installation skipped."
+    echo -e "${RED}Nvidia GPU installation skipped.${NC}"
 fi
 
 # Ask about KDE installation
-echo "Do you want to install KDE Plasma and a minimal set of associated applications? (y/n)"
+echo -e "${YELLOW}Do you want to install KDE Plasma and a minimal set of associated applications? (y/n)${NC}"
 read -r kde_response
 if [[ "$kde_response" =~ ^[Yy]$ ]]; then
     install_kde
 else
-    echo "KDE installation skipped."
+    echo -e "${RED}KDE installation skipped.${NC}"
 fi
 
 # Ask about Main installation
-echo "Do you want to start the main installation for gaming-related software? (y/n)"
+echo -e "${YELLOW}Do you want to start the main installation for gaming-related software? (y/n)${NC}"
 read -r main_response
 if [[ "$main_response" =~ ^[Yy]$ ]]; then
     main_installation
 else
-    echo "Main installation skipped."
+    echo -e "${RED}Main installation skipped.${NC}"
 fi
 
 # Ask about Pamac installation
-echo "Do you want to install Pamac? (y/n)"
+echo -e "${YELLOW}Do you want to install Pamac? (y/n)${NC}"
 read -r pamac_response
 if [[ "$pamac_response" =~ ^[Yy]$ ]]; then
     pamac_installation
 else
-    echo "Pamac installation skipped."
+    echo -e "${RED}Pamac installation skipped.${NC}"
 fi
 
-echo "Script completed. Please restart your system to apply all changes."
+# Ask about restart
+echo -e "${GREEN}Script completed succesfully. Do you want to restart your system to apply all changes now?(y/n)${NC}"
+read -r restart_response
+if [[ "$restart_response" =~ ^[Yy]$ ]]; then
+    pamac_installation
+else
+    echo -e "${RED}No restart selected${NC}"
+fi
