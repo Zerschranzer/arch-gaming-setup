@@ -88,7 +88,7 @@ pamac_installation() {
     echo "Installing pamac"
 
     # Install Pamac
-    sudo pacman -S glib2-devel glib2
+    sudo pacman -S --noconfirm glib2-devel glib2
     yay -S --noconfirm libpamac-full pamac-all
 
     # Add Flathub
