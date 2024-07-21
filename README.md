@@ -9,7 +9,7 @@ An interactive Bash script to automate the setup of an Arch Linux system for gam
 - Offers installation of AMD or NVIDIA GPU drivers and tools
 - Optional KDE Plasma desktop environment installation
 - Installs popular gaming software and utilities (Steam, Lutris, Wine, GE-Proton, Mangohud, vkbasalt, etc.)
-- Optional Pamac package manager installation
+- Optional Pamac-all package manager installation
 - Installs liquorix kernel
 - Configures system for optimal gaming performance
 
