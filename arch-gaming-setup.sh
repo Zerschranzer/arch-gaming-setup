@@ -168,6 +168,16 @@ else
     echo -e "${RED}Pamac installation skipped.${NC}"
 fi
 
+# Ask about Liquorix Kernel installation
+echo -e "${YELLOW}Do you want to install Liquorix Kernel? (y/n)${NC}"
+read -r kernel_response
+if [[ "$kernel_response" =~ ^[Yy]$ ]]; then
+    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm linux-lqx linux-lqx-headers
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+else
+    echo -e "${RED}Liquorix Kernel installation skipped.${NC}"
+fi
+
 # Ask about restart
 echo -e "${GREEN}Script completed succesfully. Do you want to restart your system to apply all changes now?(y/n)${NC}"
 read -r restart_response
