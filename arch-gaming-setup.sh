@@ -259,6 +259,9 @@ done
 
 echo -e "${YELLOW}Process completed.${NC}"
 
+        sudo rm -R /var/lib/pacman/sync
+        sudo pacman -Syy
+        sudo pacman -Syu
 # Ask about restart
 echo -e "${GREEN}Script completed succesfully. Do you want to restart your system to apply all changes now?(y/n)${NC}"
 read -r restart_response
