@@ -67,7 +67,8 @@ install_xfce() {
     sudo pacman -S --needed --noconfirm xorg lightdm lightdm-gtk-greeter
     sudo systemctl enable lightdm
 
-    sudo pacman -S --noconfirm xfce4 xfce4-goodies
+    sudo pacman -S --noconfirm xfce4 xfce4-goodies networkmanager
+
 
     sudo systemctl enable NetworkManager
 }
