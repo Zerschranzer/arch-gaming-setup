@@ -154,7 +154,7 @@ prompt_de_selection() {
     read -r de_choice
 
     case $de_choice in
-                1)
+        1)
             install_kde
             ;;
         2)
