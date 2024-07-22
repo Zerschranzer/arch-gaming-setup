@@ -84,7 +84,7 @@ main_installation() {
 
     echo "Installing AUR packages with yay..."
     yay -S --noconfirm \
-        vkbasalt lib32-vkbasalt proton-ge-custom-bin xone-dkms dxvk-bin
+        vkbasalt lib32-vkbasalt proton-ge-custom-bin xone-dkms-git dxvk-bin
 
     echo "Main installation completed."
 }
