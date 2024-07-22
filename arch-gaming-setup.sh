@@ -6,7 +6,7 @@ GREEN='\033[1;32m'    # ${GREEN}
 NC='\033[0m'         # ${NC}
 
 
-set -e
+
 
 # Function to check and enable multilib repository
 enable_multilib() {
@@ -44,10 +44,46 @@ install_kde() {
     sudo pacman -S --needed --noconfirm xorg sddm
     sudo systemctl enable sddm
 
-    sudo pacman -S --noconfirm plasma-desktop dolphin konsole systemsettings plasma-pa plasma-nm kscreen kde-gtk-config breeze-gtk powerdevil sddm-kcm kwalletmanager kio-admin
+    sudo pacman -S --noconfirm plasma-desktop dolphin konsole systemsettings plasma-pa plasma-nm kscreen kde-gtk-config breeze-gtk powerdevil sddm-kcm kwalletmanager \
+        kio-admin bluedevil
 
     sudo systemctl enable NetworkManager
 }
+
+# Function to install GNOME and GNOME software
+install_gnome() {
+    echo "Installing GNOME and applications..."
+    sudo pacman -S --needed --noconfirm xorg gdm
+    sudo systemctl enable gdm
+
+    sudo pacman -S --noconfirm gnome gnome-extra
+
+    sudo systemctl enable NetworkManager
+}
+
+# Function to install XFCE and XFCE software
+install_xfce() {
+    echo "Installing XFCE and applications..."
+    sudo pacman -S --needed --noconfirm xorg lightdm lightdm-gtk-greeter
+    sudo systemctl enable lightdm
+
+    sudo pacman -S --noconfirm xfce4 xfce4-goodies networkmanager
+
+
+    sudo systemctl enable NetworkManager
+}
+
+# Function to install Cinnamon and Cinnamon software
+install_cinnamon() {
+    echo "Installing Cinnamon and applications..."
+    sudo pacman -S --needed --noconfirm xorg lightdm lightdm-gtk-greeter
+    sudo systemctl enable lightdm
+
+    sudo pacman -S --noconfirm cinnamon nemo-fileroller
+
+    sudo systemctl enable NetworkManager
+}
+
 
 install_amd() {
     echo "Installing AMD GPU drivers and tools"
@@ -69,18 +105,22 @@ main_installation() {
     # Enable TRIM for SSDs
     sudo systemctl enable fstrim.timer
 
+    # Remove jack2 to avoid conflicts with pipewire-jack
+    sudo pacman -R --noconfirm jack2 || true
+
     # Install gaming packages and utilities with pacman
     sudo pacman -S --noconfirm \
         steam lutris wine-staging winetricks gamemode lib32-gamemode \
         giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap \
         gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal \
-        v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error \
+        v4l-utils lib32-v4l-utils libgpg-error lib32-libgpg-error \
         alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib \
         libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite \
         libxinerama lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader \
         libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 \
         gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader \
-        obs-studio discord flatpak mangohud lib32-mangohud goverlay gamescope solaar
+        obs-studio discord flatpak mangohud lib32-mangohud goverlay gamescope solaar bluez bluez-utils \
+        pipewire pipewire-pulse pipewire-alsa pipewire-jack
 
     echo "Installing AUR packages with yay..."
     yay -S --noconfirm \
@@ -101,6 +141,42 @@ pamac_installation() {
     sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
     echo "Pamac installation completed."
+}
+
+# Function to prompt for Desktop Environment selection
+prompt_de_selection() {
+    echo -e "${YELLOW}Which Desktop Environment do you want to install?${NC}"
+    echo -e "1) KDE Plasma ${GREEN}(recommended)${NC}"
+    echo -e "2) GNOME ${YELLOW}(experimental)${NC}"
+    echo -e "3) XFCE ${YELLOW}(experimental)${NC}"
+    echo -e "4) Cinnamon ${YELLOW}(experimental)${NC}"
+    echo -e "5) None"
+    read -r de_choice
+
+    case $de_choice in
+                1)
+            install_kde
+            ;;
+        2)
+            echo -e "You have selected GNOME (experimental)."
+            install_gnome
+            ;;
+        3)
+            echo -e "You have selected XFCE (experimental)."
+            install_xfce
+            ;;
+        4)
+            echo -e "You have selected Cinnamon (experimental)."
+            install_cinnamon
+            ;;
+        5)
+            echo -e "${RED}No Desktop Environment will be installed.${NC}"
+            ;;
+        *)
+            echo -e "${RED}Invalid choice. Please select a valid option."
+            prompt_de_selection
+            ;;
+    esac
 }
 
 # Main program
@@ -141,14 +217,8 @@ else
     echo -e "${RED}Nvidia GPU installation skipped.${NC}"
 fi
 
-# Ask about KDE installation
-echo -e "${YELLOW}Do you want to install KDE Plasma and a minimal set of associated applications? (y/n)${NC}"
-read -r kde_response
-if [[ "$kde_response" =~ ^[Yy]$ ]]; then
-    install_kde
-else
-    echo -e "${RED}KDE installation skipped.${NC}"
-fi
+# Function to ask about desktop environment
+prompt_de_selection
 
 # Ask about Main installation
 echo -e "${YELLOW}Do you want to start the main installation for gaming-related software? (y/n)${NC}"
@@ -168,15 +238,39 @@ else
     echo -e "${RED}Pamac installation skipped.${NC}"
 fi
 
-# Ask about Liquorix Kernel installation
-echo -e "${YELLOW}Do you want to install Liquorix Kernel? (y/n)${NC}"
-read -r kernel_response
-if [[ "$kernel_response" =~ ^[Yy]$ ]]; then
-    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm linux-lqx linux-lqx-headers
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
-else
-    echo -e "${RED}Liquorix Kernel installation skipped.${NC}"
-fi
+# Ask about Kernel installation
+while true; do
+    # Kernel selection
+    echo -e "${YELLOW}Which kernel would you like to install?${NC}"
+    echo -e "${YELLOW}Liquorix kernel most times offers slightly better performance, but it needs to be compiled on the computer, which takes way more time.${NC}"
+    echo -e "${YELLOW}Zen kernel most times offers better performance for gaming compared to the standard kernel, but its not quite as powerful as the Liquorix kernel${NC}"
+    echo -e "1) Liquorix Kernel"
+    echo -e "2) Zen Kernel"
+    echo -e "3) Do not install any custom kernel"
+    read -r kernel_choice
+
+    case $kernel_choice in
+        1)
+            MAKEFLAGS="-j$(nproc)" yay -S --noconfirm linux-lqx linux-lqx-headers
+            sudo grub-mkconfig -o /boot/grub/grub.cfg
+            break
+            ;;
+        2)
+            sudo pacman -S --noconfirm linux-zen linux-zen-headers
+            sudo grub-mkconfig -o /boot/grub/grub.cfg
+            break
+            ;;
+        3)
+            echo -e "${RED}No kernel installation selected.${NC}"
+            break
+            ;;
+        *)
+            echo -e "${RED}Invalid selection. Please choose 1, 2, or 3.${NC}"
+            ;;
+    esac
+done
+
+echo -e "${YELLOW}Process completed.${NC}"
 
 # Ask about restart
 echo -e "${GREEN}Script completed succesfully. Do you want to restart your system to apply all changes now?(y/n)${NC}"
