@@ -51,8 +51,8 @@ install_kde() {
 # Function to install GNOME and GNOME software
 install_gnome() {
     echo "Installing GNOME and applications..."
-    sudo pacman -S --needed --noconfirm xorg gdm
-    sudo systemctl enable gdm
+    sudo pacman -S --needed --noconfirm xorg sddm
+    sudo systemctl enable sddm
 
     sudo pacman -S --noconfirm gnome gnome-extra networkmanager
 
@@ -62,8 +62,8 @@ install_gnome() {
 # Function to install XFCE and XFCE software
 install_xfce() {
     echo "Installing XFCE and applications..."
-    sudo pacman -S --needed --noconfirm xorg lightdm lightdm-gtk-greeter
-    sudo systemctl enable lightdm
+    sudo pacman -S --needed --noconfirm xorg sddm
+    sudo systemctl enable sddm
 
     sudo pacman -S --noconfirm xfce4 xfce4-goodies networkmanager
 
@@ -74,8 +74,8 @@ install_xfce() {
 # Function to install Cinnamon and Cinnamon software
 install_cinnamon() {
     echo "Installing Cinnamon and applications..."
-    sudo pacman -S --needed --noconfirm xorg lightdm lightdm-gtk-greeter
-    sudo systemctl enable lightdm
+    sudo pacman -S --needed --noconfirm xorg sddm
+    sudo systemctl enable sddm
 
     sudo pacman -S --noconfirm cinnamon nemo-fileroller networkmanager
 
