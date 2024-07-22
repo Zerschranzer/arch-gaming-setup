@@ -6,8 +6,6 @@ GREEN='\033[1;32m'    # ${GREEN}
 NC='\033[0m'         # ${NC}
 
 
-
-
 # Function to check and enable multilib repository
 enable_multilib() {
     if ! grep -q "^\[multilib\]" /etc/pacman.conf; then
@@ -56,7 +54,7 @@ install_gnome() {
     sudo pacman -S --needed --noconfirm xorg gdm
     sudo systemctl enable gdm
 
-    sudo pacman -S --noconfirm gnome gnome-extra
+    sudo pacman -S --noconfirm gnome gnome-extra networkmanager
 
     sudo systemctl enable NetworkManager
 }
@@ -79,7 +77,7 @@ install_cinnamon() {
     sudo pacman -S --needed --noconfirm xorg lightdm lightdm-gtk-greeter
     sudo systemctl enable lightdm
 
-    sudo pacman -S --noconfirm cinnamon nemo-fileroller
+    sudo pacman -S --noconfirm cinnamon nemo-fileroller networkmanager
 
     sudo systemctl enable NetworkManager
 }
