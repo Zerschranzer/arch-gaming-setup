@@ -89,11 +89,13 @@ select_locale() {
 select_disk() {
     print_color "$YELLOW" "Available disks:"
     lsblk
-    read -p "Please enter the device name of the disk to be used (e.g., sda): " disk
+    echo -e "${YELLOW}Please enter the device name of the disk to be used (e.g., sda):${NC} "
+    read disk
     print_color "$BLUE" "You have selected /dev/$disk."
     print_color "$MAGENTA" "1) Automatic partitioning (will erase all data)"
     print_color "$MAGENTA" "2) Manual partitioning"
-    read -p "Choose partitioning method (1/2): " part_method
+    echo -e "${YELLOW}Choose partitioning method (1/2):${NC} "
+    read part_method
     
     if [[ $part_method == "1" ]]; then
         print_color "$RED" "Automatic partitioning will erase all data on /dev/$disk."
@@ -101,7 +103,8 @@ select_disk() {
         print_color "$BLUE" "Manual partitioning selected. You will use cfdisk to partition the disk."
     fi
     
-    read -p "Continue? (y/n): " confirm
+    echo -e "${YELLOW}Continue? (y/n):${NC} "
+    read confirm
     if [[ $confirm != "y" ]]; then
         print_color "$RED" "Aborted."
         exit 1
@@ -117,10 +120,12 @@ auto_partition() {
     print_color "$YELLOW" "Do you want to create a swap partition?"
     print_color "$MAGENTA" "1) Yes"
     print_color "$MAGENTA" "2) No"
-    read -p "Enter your choice (1/2): " swap_choice
+    echo -e "${YELLOW}Enter your choice (1/2):${NC} "
+    read swap_choice
     
     if [[ $swap_choice == "1" ]]; then
-        read -p "Enter the size of swap partition in MiB: " swap_size
+        echo -e "${YELLOW}Enter the size of swap partition in MiB:${NC} " 
+        read swap_size
     fi
     
     # Calculate the remaining space for root partition (in sectors)
@@ -183,7 +188,8 @@ select_filesystem() {
     print_color "$MAGENTA" "3) xfs"
     print_color "$MAGENTA" "4) f2fs"
     
-    read -p "Please select a number (1-4): " fs_choice
+    echo -e "${YELLOW}Please select a number (1-4):${NC} " 
+    read fs_choice
     
     case $fs_choice in
         1) filesystem="ext4" ;;
