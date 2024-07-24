@@ -322,6 +322,23 @@ systemctl enable NetworkManager
 exit
 EOF
 
+# Ask if the user wants to copy the gaming setup script
+echo "Would you like to copy the arch-gaming-setup.sh script to the new user's home directory?"
+read -p "This will allow you to easily run it after rebooting. (y/n): " copy_script
+
+if [[ $copy_script == "y" || $copy_script == "Y" ]]; then
+    # Copy the script to the new user's home directory
+    cp /root/arch-gaming-setup/arch-gaming-setup.sh /mnt/home/$username/
+    # Set the correct ownership
+    arch-chroot /mnt chown $username:$username /home/$username/arch-gaming-setup.sh
+    # Make the script executable
+    arch-chroot /mnt chmod +x /home/$username/arch-gaming-setup.sh
+    echo "The arch-gaming-setup.sh script has been copied to /home/$username/"
+    echo "After rebooting, you can run it with: ./arch-gaming-setup.sh"
+else
+    echo "The script was not copied. You can still clone the repository and run it after rebooting."
+fi
+
 # Clear sensitive variables
 unset root_password root_password_confirm user_password user_password_confirm
 
