@@ -336,7 +336,7 @@ if [[ $copy_script == "y" || $copy_script == "Y" ]]; then
     echo "The arch-gaming-setup.sh script has been copied to /home/$username/"
     echo "After rebooting, you can run it with: ./arch-gaming-setup.sh"
 else
-    echo "The script was not copied. You can still clone the repository and run it after rebooting."
+    echo "The script was not copied. You can still clone the repository and run it after rebooting if you want."
 fi
 
 # Clear sensitive variables
