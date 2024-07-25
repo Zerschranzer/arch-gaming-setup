@@ -167,7 +167,8 @@ manual_partition() {
     echo "Please create your desired partitions. Remember to create at least:"
     echo "1. An EFI System Partition (at least 500M, type: EFI System)"
     echo "2. A Root Partition (type: Linux filesystem)"
-    echo "You may also create Swap and/or Home partitions if desired."
+    echo "3. Optionally, a Home Partition (type: Linux filesystem)"
+    echo "4. Optionally, a Swap Partition (type: Linux swap)"
     read -p "Press Enter to continue to cfdisk..."
     cfdisk /dev/$disk
 
@@ -216,14 +217,20 @@ manual_partition() {
     mount /dev/$root_partition /mnt
 
     read -p "Enter the EFI partition (e.g., ${disk}1): " efi_partition
-    mkdir /mnt/boot
+    mkdir -p /mnt/boot
     mount /dev/$efi_partition /mnt/boot
 
     # Optionally mount home partition
     read -p "Enter the home partition (leave blank if none): " home_partition
     if [[ -n $home_partition ]]; then
-        mkdir /mnt/home
+        mkdir -p /mnt/home
         mount /dev/$home_partition /mnt/home
+    fi
+
+    # Optionally enable swap
+    read -p "Enter the swap partition (leave blank if none): " swap_partition
+    if [[ -n $swap_partition ]]; then
+        swapon /dev/$swap_partition
     fi
 
     echo "Partitioning and mounting complete."
