@@ -71,13 +71,37 @@ select_locale() {
 
 # Function to select disk and partitioning method
 select_disk() {
-    echo "Available disks:"
-    lsblk
-    read -p "Please enter the device name of the disk to be used (e.g., sda): " disk
-    echo "You have selected /dev/$disk."
-    echo "1) Automatic partitioning (will erase all data on selected disk)"
-    echo "2) Manual partitioning"
-    read -p "Choose partitioning method (1/2): " part_method
+    # Get available disks
+    available_disks=($(lsblk -dno name -e 7,11))
+
+    while true; do
+        echo "Available disks:"
+        for i in "${!available_disks[@]}"; do
+            echo "$((i+1))) ${available_disks[i]} ($(lsblk -dno size /dev/${available_disks[i]}))"
+        done
+
+        read -p "Please enter the number of the disk to be used: " disk_number
+
+        if [[ "$disk_number" =~ ^[0-9]+$ ]] && [ "$disk_number" -ge 1 ] && [ "$disk_number" -le "${#available_disks[@]}" ]; then
+            disk=${available_disks[$((disk_number-1))]}
+            echo "You have selected /dev/$disk."
+            break
+        else
+            echo "Invalid selection. Please try again."
+        fi
+    done
+
+    while true; do
+        echo "1) Automatic partitioning (will erase all data on selected disk)"
+        echo "2) Manual partitioning"
+        read -p "Choose partitioning method (1/2): " part_method
+
+        if [[ $part_method == "1" || $part_method == "2" ]]; then
+            break
+        else
+            echo "Invalid selection. Please enter 1 or 2."
+        fi
+    done
 
     if [[ $part_method == "1" ]]; then
         echo "Automatic partitioning will erase all data on /dev/$disk."
@@ -85,8 +109,16 @@ select_disk() {
         echo "Manual partitioning selected. You will use cfdisk to partition the disk."
     fi
 
-    read -p "Continue? (y/n): " confirm
-    if [[ $confirm != "y" ]]; then
+    while true; do
+        read -p "Continue? (y/n): " confirm
+        if [[ $confirm =~ ^[YyNn]$ ]]; then
+            break
+        else
+            echo "Invalid input. Please enter y or n."
+        fi
+    done
+
+    if [[ $confirm =~ ^[Nn]$ ]]; then
         echo "Aborted."
         exit 1
     fi
