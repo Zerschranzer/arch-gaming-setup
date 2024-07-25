@@ -11,7 +11,7 @@ select_keyboard_layout() {
     echo "4) French (fr)"
     echo "5) Spanish (es)"
     echo "6) Italian (it)"
-    echo "7) Other (list all)"
+    echo "7) Other (list all[close list with q])"
 
     read -p "Please select a number (1-7): " layout_choice
 
