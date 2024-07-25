@@ -252,7 +252,7 @@ manual_partition() {
 
     # Mount partitions
     echo "Available partitions:"
-    lsblk
+    lsblk -f
     echo "Now we'll mount the partitions."
     
     while true; do
