@@ -80,7 +80,7 @@ select_disk() {
             echo "$((i+1))) ${available_disks[i]} ($(lsblk -dno size /dev/${available_disks[i]}))"
         done
 
-        read -p "Please enter the number of the disk to be used: " disk_number
+        read -p "Please enter the number of the disk to be used to install Arch Linux: " disk_number
 
         if [[ "$disk_number" =~ ^[0-9]+$ ]] && [ "$disk_number" -ge 1 ] && [ "$disk_number" -le "${#available_disks[@]}" ]; then
             disk=${available_disks[$((disk_number-1))]}
@@ -183,7 +183,7 @@ auto_partition() {
         mkswap /dev/${swap_partition}
         swapon /dev/${swap_partition}
     fi
-    mkfs.ext4 /dev/${root_partition}
+    mkfs.ext4 -F /dev/${root_partition}
 
     # Mount partitions
     mount /dev/${root_partition} /mnt
@@ -210,26 +210,33 @@ manual_partition() {
 
     # Function to format a partition
     format_partition() {
-        local partition=$1
-        echo "Select filesystem for /dev/$partition:"
-        echo "1) ext4"
-        echo "2) btrfs"
-        echo "3) xfs"
-        echo "4) f2fs"
-        echo "5) FAT32 (for EFI partition)"
-        echo "6) Swap"
-        read -p "Enter your choice (1-6): " fs_choice
+    local partition=$1
+    echo "Select filesystem for /dev/$partition:"
+    echo "1) ext4"
+    echo "2) btrfs"
+    echo "3) xfs"
+    echo "4) f2fs"
+    echo "5) FAT32 (for EFI partition)"
+    echo "6) Swap"
+    read -p "Enter your choice (1-6): " fs_choice
 
-        case $fs_choice in
-            1) mkfs.ext4 /dev/$partition && echo "Formatted /dev/$partition as ext4" ;;
-            2) mkfs.btrfs /dev/$partition && echo "Formatted /dev/$partition as btrfs" ;;
-            3) mkfs.xfs /dev/$partition && echo "Formatted /dev/$partition as xfs" ;;
-            4) mkfs.f2fs /dev/$partition && echo "Formatted /dev/$partition as f2fs" ;;
-            5) mkfs.fat -F32 /dev/$partition && echo "Formatted /dev/$partition as FAT32" ;;
-            6) mkswap /dev/$partition && swapon /dev/$partition && echo "Formatted and enabled /dev/$partition as swap" ;;
-            *) echo "Invalid choice. Partition not formatted." ;;
-        esac
-    }
+    case $fs_choice in
+        1) mkfs.ext4 -F /dev/$partition && echo "Formatted /dev/$partition as ext4" ;;
+        2) mkfs.btrfs -f /dev/$partition && echo "Formatted /dev/$partition as btrfs" ;;
+        3) mkfs.xfs -f /dev/$partition && echo "Formatted /dev/$partition as xfs" ;;
+        4) mkfs.f2fs -f /dev/$partition && echo "Formatted /dev/$partition as f2fs" ;;
+        5) mkfs.fat -F32 /dev/$partition && echo "Formatted /dev/$partition as FAT32" ;;
+        6) mkswap /dev/$partition && swapon /dev/$partition && echo "Formatted and enabled /dev/$partition as swap" ;;
+        *) echo "Invalid choice. Partition not formatted." && return 1 ;;
+    esac
+
+    if [ $? -eq 0 ]; then
+        echo "Formatting successful."
+    else
+        echo "Error: Formatting failed. Please check the partition and try again."
+        return 1
+    fi
+}
 
     # Format partitions
     while true; do
