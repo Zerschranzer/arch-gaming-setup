@@ -1,6 +1,6 @@
 # Arch Linux Gaming Setup
 
-This repository contains two Bash scripts designed to simplify the process of installing and configuring Arch Linux for gaming.
+This repository contains two scripts: 1. Arch Linux Installation: An interactive script to install Arch Linux from a live USB stick, offering automatic or manual partitioning options. 2. Gaming Setup: A script to transform a fresh Arch Linux installation into a gaming-ready system with a few interactive prompts.
 
 ## Scripts
 
