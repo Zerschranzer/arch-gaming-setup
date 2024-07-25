@@ -221,18 +221,19 @@ manual_partition() {
         read -p "Enter your choice (1-6): " fs_choice
 
         case $fs_choice in
-            1) mkfs.ext4 /dev/$partition ;;
-            2) mkfs.btrfs /dev/$partition ;;
-            3) mkfs.xfs /dev/$partition ;;
-            4) mkfs.f2fs /dev/$partition ;;
-            5) mkfs.fat -F32 /dev/$partition ;;
-            6) mkswap /dev/$partition && swapon /dev/$partition ;;
+            1) mkfs.ext4 /dev/$partition && echo "Formatted /dev/$partition as ext4" ;;
+            2) mkfs.btrfs /dev/$partition && echo "Formatted /dev/$partition as btrfs" ;;
+            3) mkfs.xfs /dev/$partition && echo "Formatted /dev/$partition as xfs" ;;
+            4) mkfs.f2fs /dev/$partition && echo "Formatted /dev/$partition as f2fs" ;;
+            5) mkfs.fat -F32 /dev/$partition && echo "Formatted /dev/$partition as FAT32" ;;
+            6) mkswap /dev/$partition && swapon /dev/$partition && echo "Formatted and enabled /dev/$partition as swap" ;;
             *) echo "Invalid choice. Partition not formatted." ;;
         esac
     }
 
     # Format partitions
     while true; do
+        lsblk -f
         read -p "Enter partition to format (e.g., ${disk}1), or 'done' when finished: " partition
         if [[ $partition == "done" ]]; then
             break
@@ -244,30 +245,71 @@ manual_partition() {
     done
 
     # Mount partitions
-    echo "Available disks:"
+    echo "Available partitions:"
     lsblk
     echo "Now we'll mount the partitions."
-    read -p "Enter the root partition (e.g., ${disk}2): " root_partition
-    mount /dev/$root_partition /mnt
+    
+    while true; do
+        read -p "Enter the root partition (e.g., ${disk}2): " root_partition
+        if [[ -e /dev/$root_partition ]]; then
+            if mount /dev/$root_partition /mnt; then
+                echo "Root partition mounted successfully."
+                break
+            else
+                echo "Failed to mount root partition. Please try again."
+            fi
+        else
+            echo "Partition /dev/$root_partition does not exist."
+        fi
+    done
 
-    read -p "Enter the EFI partition (e.g., ${disk}1): " efi_partition
-    mkdir -p /mnt/boot
-    mount /dev/$efi_partition /mnt/boot
+    while true; do
+        read -p "Enter the EFI partition (e.g., ${disk}1): " efi_partition
+        if [[ -e /dev/$efi_partition ]]; then
+            mkdir -p /mnt/boot
+            if mount /dev/$efi_partition /mnt/boot; then
+                echo "EFI partition mounted successfully."
+                break
+            else
+                echo "Failed to mount EFI partition. Please try again."
+            fi
+        else
+            echo "Partition /dev/$efi_partition does not exist."
+        fi
+    done
 
     # Optionally mount home partition
     read -p "Enter the home partition (leave blank if none): " home_partition
     if [[ -n $home_partition ]]; then
-        mkdir -p /mnt/home
-        mount /dev/$home_partition /mnt/home
+        if [[ -e /dev/$home_partition ]]; then
+            mkdir -p /mnt/home
+            if mount /dev/$home_partition /mnt/home; then
+                echo "Home partition mounted successfully."
+            else
+                echo "Failed to mount home partition."
+            fi
+        else
+            echo "Partition /dev/$home_partition does not exist."
+        fi
     fi
 
     # Optionally enable swap
     read -p "Enter the swap partition (leave blank if none): " swap_partition
     if [[ -n $swap_partition ]]; then
-        swapon /dev/$swap_partition
+        if [[ -e /dev/$swap_partition ]]; then
+            if swapon /dev/$swap_partition; then
+                echo "Swap partition enabled successfully."
+            else
+                echo "Failed to enable swap partition."
+            fi
+        else
+            echo "Partition /dev/$swap_partition does not exist."
+        fi
     fi
 
     echo "Partitioning and mounting complete."
+    echo "Current mount status:"
+    lsblk -f
 }
 
 # Main script
