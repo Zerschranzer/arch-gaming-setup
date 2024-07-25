@@ -342,18 +342,27 @@ exit
 EOF
 
 # Ask if the user wants to copy the gaming setup script
-"Would you like to copy the arch-gaming-setup.sh script to the new user's home directory?"
+echo "Would you like to copy the arch-gaming-setup.sh script to the new user's home directory?"
 read -p "This will allow you to easily run it after rebooting. (y/n): " copy_script
 
-if [[ $copy_script == "y" || $copy_script == "Y" ]]; then
-    # Copy the script to the new user's home directory
-    cp /root/arch-gaming-setup/arch-gaming-setup.sh /mnt/home/$username/
-    # Set the correct ownership
-    arch-chroot /mnt chown $username:$username /home/$username/arch-gaming-setup.sh
-    # Make the script executable
-    arch-chroot /mnt chmod +x /home/$username/arch-gaming-setup.sh
-    echo "The arch-gaming-setup.sh script has been copied to /home/$username/"
-    echo "After rebooting, you can run it with: ./arch-gaming-setup.sh"
+if [[ $copy_script =~ ^[Yy]$ ]]; then
+    # Check if the source file exists
+    if [ ! -f ./arch-gaming-setup.sh ]; then
+        echo "Error: Source file ./arch-gaming-setup.sh not found in the current directory."
+        echo "Please make sure you're running this script from the cloned 'arch-gaming-setup' directory."
+    else
+        # Copy the script to the new user's home directory
+        if cp ./arch-gaming-setup.sh /mnt/home/$username/; then
+            # Set the correct ownership
+            arch-chroot /mnt chown $username:$username /home/$username/arch-gaming-setup.sh
+            # Make the script executable
+            arch-chroot /mnt chmod +x /home/$username/arch-gaming-setup.sh
+            echo "The arch-gaming-setup.sh script has been successfully copied to /home/$username/"
+            echo "After rebooting and logging in as $username, you can run it with: ./arch-gaming-setup.sh"
+        else
+            echo "Error: Failed to copy the script. Please check permissions and try again."
+        fi
+    fi
 else
     echo "The script was not copied. You can still clone the repository and run it after rebooting if you want."
 fi
