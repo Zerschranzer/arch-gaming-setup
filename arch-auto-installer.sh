@@ -92,7 +92,7 @@ select_disk() {
     echo -e "${YELLOW}Please enter the device name of the disk to be used (e.g., sda):${NC} "
     read disk
     print_color "$BLUE" "You have selected /dev/$disk."
-    print_color "$MAGENTA" "1) Automatic partitioning (will erase all data)"
+    print_color "$MAGENTA" "1) Automatic partitioning (will erase all data on selected disk)"
     print_color "$MAGENTA" "2) Manual partitioning"
     echo -e "${YELLOW}Choose partitioning method (1/2):${NC} "
     read part_method
