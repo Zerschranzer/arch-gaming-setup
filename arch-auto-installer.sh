@@ -352,10 +352,10 @@ if [[ $copy_script == "y" || $copy_script == "Y" ]]; then
     arch-chroot /mnt chown $username:$username /home/$username/arch-gaming-setup.sh
     # Make the script executable
     arch-chroot /mnt chmod +x /home/$username/arch-gaming-setup.sh
-    "The arch-gaming-setup.sh script has been copied to /home/$username/"
-    "After rebooting, you can run it with: ./arch-gaming-setup.sh"
+    echo "The arch-gaming-setup.sh script has been copied to /home/$username/"
+    echo "After rebooting, you can run it with: ./arch-gaming-setup.sh"
 else
-    "The script was not copied. You can still clone the repository and run it after rebooting if you want."
+    echo "The script was not copied. You can still clone the repository and run it after rebooting if you want."
 fi
 
 # Clear sensitive variables
