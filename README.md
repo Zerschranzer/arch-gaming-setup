@@ -6,7 +6,7 @@ This repository contains two Bash scripts designed to simplify the process of in
 
 ### 1. arch-auto-installer.sh
 
-A user-friendly, interactive Bash script for automating Arch Linux installation.
+A user-friendly, interactive Bash script for automating the installation of an Arch Linux base system.
 
 #### Key Features:
 - Interactive keyboard layout and locale selection
@@ -84,7 +84,7 @@ If you chose to copy the script during installation:
    ./arch-gaming-setup.sh
    ```
 
-If you didn't copy the script or want to use the latest version:
+If you didn't copy the script or want to set up the system by yourself:
 1. Clone this repository:
    ```
    git clone https://github.com/Zerschranzer/arch-gaming-setup
@@ -112,7 +112,7 @@ If you didn't copy the script or want to use the latest version:
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Zerschranzer/arch-gaming-setup/issues).
+Contributions, issues, and feature requests are welcome!
 
 ## License
 
