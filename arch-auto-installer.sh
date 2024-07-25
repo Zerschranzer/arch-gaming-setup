@@ -342,7 +342,7 @@ exit
 EOF
 
 # Ask if the user wants to copy the gaming setup script
-print_color "$YELLOW" "Would you like to copy the arch-gaming-setup.sh script to the new user's home directory?"
+"Would you like to copy the arch-gaming-setup.sh script to the new user's home directory?"
 read -p "This will allow you to easily run it after rebooting. (y/n): " copy_script
 
 if [[ $copy_script == "y" || $copy_script == "Y" ]]; then
@@ -352,10 +352,10 @@ if [[ $copy_script == "y" || $copy_script == "Y" ]]; then
     arch-chroot /mnt chown $username:$username /home/$username/arch-gaming-setup.sh
     # Make the script executable
     arch-chroot /mnt chmod +x /home/$username/arch-gaming-setup.sh
-    print_color "$GREEN" "The arch-gaming-setup.sh script has been copied to /home/$username/"
-    print_color "$BLUE" "After rebooting, you can run it with: ./arch-gaming-setup.sh"
+    "The arch-gaming-setup.sh script has been copied to /home/$username/"
+    "After rebooting, you can run it with: ./arch-gaming-setup.sh"
 else
-    print_color "$BLUE" "The script was not copied. You can still clone the repository and run it after rebooting if you want."
+    "The script was not copied. You can still clone the repository and run it after rebooting if you want."
 fi
 
 # Clear sensitive variables
