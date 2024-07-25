@@ -233,7 +233,6 @@ manual_partition() {
 
     # Format partitions
     while true; do
-        lsblk -f
         read -p "Enter partition to format (e.g., ${disk}1), or 'done' when finished: " partition
         if [[ $partition == "done" ]]; then
             break
