@@ -212,6 +212,8 @@ manual_partition() {
     done
 
     # Mount partitions
+    echo "Available disks:"
+    lsblk
     echo "Now we'll mount the partitions."
     read -p "Enter the root partition (e.g., ${disk}2): " root_partition
     mount /dev/$root_partition /mnt
