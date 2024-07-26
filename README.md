@@ -1,6 +1,6 @@
 # Arch Gaming Setup
 
-An interactive Bash script to automate the setup of an Arch Linux system for gaming.
+Interactive Bash script to transform a fresh Arch Linux installation into a gaming-ready system.
 
 ## Features:
 
