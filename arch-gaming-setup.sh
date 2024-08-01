@@ -93,7 +93,7 @@ install_amd() {
 
         if [[ "$mesa_version" == "git" ]]; then
             echo "Installing Git version of Mesa and Vulkan drivers..."
-            yay -S --noconfirm mesa-git lib32-mesa-git amdonly-gaming-vulkan-radeon-git lib32-amdonly-gaming-vulkan-radeon-git
+          MAKEFLAGS="-j$(nproc)" yay -S --noconfirm mesa-git lib32-mesa-git amdonly-gaming-vulkan-radeon-git lib32-amdonly-gaming-vulkan-radeon-git
             break
         elif [[ "$mesa_version" == "stable" ]]; then
             echo "Installing stable version of Mesa and Vulkan drivers..."
@@ -106,7 +106,7 @@ install_amd() {
 
     # Common packages for both versions
     sudo pacman -S --noconfirm vulkan-icd-loader lib32-vulkan-icd-loader
-    yay -S --noconfirm lact
+   MAKEFLAGS="-j$(nproc)" yay -S --noconfirm lact
 }
 
 install_nvidia() {
@@ -129,7 +129,7 @@ main_installation() {
     lib32-vulkan-icd-loader obs-studio discord mangohud lib32-mangohud goverlay gamescope solaar bluez bluez-utils pipewire pipewire-pulse pipewire-alsa linux-headers xwaylandvideobridge
 
     echo "Installing AUR packages with yay..."
-    yay -S --noconfirm \
+    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm \
         vkbasalt lib32-vkbasalt proton-ge-custom-bin xone-dkms-git dxvk-bin
 
     echo "Main installation completed."
@@ -141,7 +141,7 @@ pamac_installation() {
 
     # Install Pamac
     sudo pacman -S --noconfirm glib2-devel glib2
-    yay -S --noconfirm libpamac-full pamac-all
+    MAKEFLAGS="-j$(nproc)" yay -S --noconfirm libpamac-full pamac-all
 
     # Add Flathub
     sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
