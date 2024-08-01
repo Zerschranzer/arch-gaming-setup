@@ -109,6 +109,8 @@ main_installation() {
     lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader \
     lib32-vulkan-icd-loader obs-studio discord mangohud lib32-mangohud goverlay gamescope solaar bluez bluez-utils lib32-libpulse pipewire pipewire-pulse pipewire-alsa linux-headers xwaylandvideobridge
 
+    sudo systemctl enable bluetooth.service
+    
     echo "Installing AUR packages with yay..."
     yay -S --noconfirm \
         vkbasalt lib32-vkbasalt proton-ge-custom-bin xone-dkms-git dxvk-bin
