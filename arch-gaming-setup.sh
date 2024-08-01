@@ -85,10 +85,29 @@ install_cinnamon() {
 
 install_amd() {
     echo "Installing AMD GPU drivers and tools"
-    # Install AMD drivers and tools
-    sudo pacman -S --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader
+    echo -e "${YELLOW}Warning: The Git version of Mesa may be unstable and requires frequent updates. It's recommended for advanced users or for testing purposes.${NC}"
+    
+    while true; do
+        echo -e "${YELLOW}Do you want to install the stable version or the git version of Mesa? (stable/git)${NC}"
+        read -r mesa_version
+
+        if [[ "$mesa_version" == "git" ]]; then
+            echo "Installing Git version of Mesa and Vulkan drivers..."
+            yay -S --noconfirm mesa-git lib32-mesa-git amdonly-gaming-vulkan-radeon-git lib32-amdonly-gaming-vulkan-radeon-git
+            break
+        elif [[ "$mesa_version" == "stable" ]]; then
+            echo "Installing stable version of Mesa and Vulkan drivers..."
+            sudo pacman -S --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon
+            break
+        else
+            echo -e "${RED}Invalid input. Please enter either 'stable' or 'git'.${NC}"
+        fi
+    done
+
+    # Common packages for both versions
+    sudo pacman -S --noconfirm vulkan-icd-loader lib32-vulkan-icd-loader
     yay -S --noconfirm lact
-    }
+}
 
 install_nvidia() {
     echo "Installing Nvidia GPU drivers"
@@ -167,7 +186,7 @@ prompt_de_selection() {
 }
 
 # Main program
-echo -e "${YELLOW}This script will configure your system for gaming and install software.${NC}"
+echo -e "${YELLOW}This script will configure your system for gaming and install software using and installing yay.${NC}"
 echo -e "${YELLOW}Please make sure you have a backup of your important data.${NC}"
 echo -e  "${YELLOW}Do you want to proceed? (y/n)${NC}"
 read -r response
