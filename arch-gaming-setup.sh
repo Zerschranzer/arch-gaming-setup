@@ -93,7 +93,7 @@ install_amd() {
 
         if [[ "$mesa_version" == "git" ]]; then
             echo "Installing Git version of Mesa and Vulkan drivers..."
-          MAKEFLAGS="-j$(nproc)" yay -S --noconfirm amdonly-gaming-mesa-git
+          MAKEFLAGS="-j$(nproc)" yay -S --noconfirm amdonly-gaming-mesa-git amdonly-gaming-vulkan-radeon-git lib32-amdonly-gaming-vulkan-radeon-git lib32-amdonly-gaming-mesa-git
             break
         elif [[ "$mesa_version" == "stable" ]]; then
             echo "Installing stable version of Mesa and Vulkan drivers..."
