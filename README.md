@@ -9,7 +9,7 @@ Interactive Bash script to transform a fresh Arch Linux installation into a gami
 - Offers installation of AMD or NVIDIA GPU drivers and tools
 - Optional: Choose between KDE, Gnome Xfce and Cinnamon.
 - Installs popular gaming software and utilities (Steam, Lutris, Wine, GE-Proton, Mangohud, vkbasalt, etc.)
-- Optional: Pamac-all package manager installation
+- Optional: Selection of Graphical Package Manager (Pamac or Octopi or none)
 - Optional: choose between Liquorix or Zen Kernel
 - Configures system for optimal gaming performance
 
