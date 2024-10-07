@@ -1,5 +1,10 @@
 #!/bin/bash
 
+RED='\033[1;31m'        # ${RED}
+YELLOW='\033[1;33m'    # ${YELLOW}
+GREEN='\033[1;32m'    # ${GREEN}
+NC='\033[0m'         # ${NC}
+
 if [ "$(id -u)" -eq 0 ]; then
     echo -e "${RED}Error: Do not run this script as root or with sudo.${NC}"
     echo -e "${YELLOW}This script is designed to be run as a regular user with sudo privileges.${NC}"
@@ -7,12 +12,6 @@ if [ "$(id -u)" -eq 0 ]; then
     echo -e "${GREEN}Please run the script as a regular user: ./arch-gaming-setup.sh${NC}"
     exit 1
 fi
-
-RED='\033[1;31m'        # ${RED}
-YELLOW='\033[1;33m'    # ${YELLOW}
-GREEN='\033[1;32m'    # ${GREEN}
-NC='\033[0m'         # ${NC}
-
 
 # Function to check and enable multilib repository
 enable_multilib() {
