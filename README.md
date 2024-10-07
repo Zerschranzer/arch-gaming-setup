@@ -43,4 +43,4 @@ This script allows users to easily transform a fresh Arch Linux installation int
 
 5. Follow the on-screen prompts
 
-Note: This script should be run on a fresh Arch Linux installation. Always review scripts before running them with root privileges.
+Note: This script should be run on a fresh Arch Linux installation. Always review scripts before running them with root privileges. Make sure you created a user with sudo rights before running this script.
