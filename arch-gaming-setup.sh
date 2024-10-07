@@ -10,7 +10,7 @@ set -e
 # Function to check required dependencies
 check_dependencies() {
     local missing=()
-    local dependencies=("sudo" "git")
+    local dependencies=("sudo")
 
     for cmd in "${dependencies[@]}"; do
         if ! command -v "$cmd" >/dev/null 2>&1; then
