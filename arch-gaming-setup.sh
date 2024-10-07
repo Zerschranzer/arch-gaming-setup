@@ -5,35 +5,6 @@ YELLOW='\033[1;33m'    # ${YELLOW}
 GREEN='\033[1;32m'    # ${GREEN}
 NC='\033[0m'         # ${NC}
 
-set -e
-
-# Function to check required dependencies
-check_dependencies() {
-    local missing=()
-    local dependencies=("sudo")
-
-    for cmd in "${dependencies[@]}"; do
-        if ! command -v "$cmd" >/dev/null 2>&1; then
-            missing+=("$cmd")
-        fi
-    done
-
-    if [ ${#missing[@]} -ne 0 ]; then
-        echo -e "${RED}Error: The following required dependencies are missing: ${missing[*]}${RESET}"
-                read -p "Do you want to install them now? (y/n) " install_response
-
-        if [[ "$install_response" =~ ^[Yy]$ ]]; then
-            for pkg in "${missing[@]}"; do
-                sudo pacman -S --noconfirm "${missing[@]}"
-            done
-        else
-            echo -e "${RED}Please install the missing dependencies manually and try again.${NC}"
-            exit 1
-        fi
-    else
-        echo -e "${GREEN}All required dependencies are already installed.${NC}"
-    fi
-}
 
 # Function to check and enable multilib repository
 enable_multilib() {
@@ -230,9 +201,6 @@ prompt_package_manager() {
             ;;
     esac
 }
-
-#Checke dependencies before proceeding
-check_dependencies
 
 # Main program
 echo -e "${YELLOW}This script will configure your system for gaming and install the necessary software.${NC}"
