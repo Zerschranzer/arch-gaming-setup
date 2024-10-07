@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if [ "$(id -u)" -eq 0 ]; then
+    echo -e "${RED}Error: Do not run this script as root or with sudo.${NC}"
+    echo -e "${YELLOW}This script is designed to be run as a regular user with sudo privileges.${NC}"
+    echo -e "${YELLOW}It will prompt for sudo rights when necessary during the setup process.${NC}"
+    echo -e "${GREEN}Please run the script as a regular user: ./arch-gaming-setup.sh${NC}"
+    exit 1
+fi
+
 RED='\033[1;31m'        # ${RED}
 YELLOW='\033[1;33m'    # ${YELLOW}
 GREEN='\033[1;32m'    # ${GREEN}
