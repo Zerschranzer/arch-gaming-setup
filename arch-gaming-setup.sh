@@ -50,7 +50,7 @@ install_kde() {
     sudo systemctl enable sddm
 
     sudo pacman -S --noconfirm plasma-desktop dolphin konsole systemsettings plasma-pa plasma-nm kscreen kde-gtk-config breeze-gtk powerdevil sddm-kcm kwalletmanager \
-        kio-admin bluedevil
+        kio-admin bluedevil ark
 
     sudo systemctl enable NetworkManager
 }
