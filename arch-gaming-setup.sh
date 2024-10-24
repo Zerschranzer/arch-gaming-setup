@@ -43,38 +43,41 @@ install_yay() {
     fi
 }
 
-# Function to install KDE and KDE software
+# Function to install KDE and an minimal set of KDE software
 install_kde() {
-    echo "Installing KDE Plasma and applications..."
+    echo "Installing KDE Plasma and an minimal set of KDE applications..."
     sudo pacman -S --needed --noconfirm xorg sddm
     sudo systemctl enable sddm
-
     sudo pacman -S --noconfirm plasma-desktop dolphin konsole systemsettings plasma-pa plasma-nm kscreen kde-gtk-config breeze-gtk powerdevil sddm-kcm kwalletmanager \
-        kio-admin bluedevil ark
-
+    kio-admin bluedevil ark
     sudo systemctl enable NetworkManager
 }
+
+# Function to install KDE and full KDE software
+install_kde_full() {
+    echo "Installing KDE Plasma and all KDE applications..."
+    sudo pacman -S --needed --noconfirm xorg sddm
+    sudo systemctl enable sddm
+    sudo pacman -S --noconfirm plasma kde-applications
+    sudo systemctl enable NetworkManager
+}
+    
 
 # Function to install GNOME and GNOME software
 install_gnome() {
     echo "Installing GNOME and applications..."
-    sudo pacman -S --needed --noconfirm xorg sddm
-    sudo systemctl enable sddm
-
+    sudo pacman -S --needed --noconfirm xorg gdm
+    sudo systemctl enable gdm
     sudo pacman -S --noconfirm gnome gnome-extra networkmanager
-
     sudo systemctl enable NetworkManager
 }
 
 # Function to install XFCE and XFCE software
 install_xfce() {
     echo "Installing XFCE and applications..."
-    sudo pacman -S --needed --noconfirm xorg sddm
-    sudo systemctl enable sddm
-
+    sudo pacman -S --needed --noconfirm xorg lightdm lightdm-gtk-greeter
+    sudo systemctl enable lightdm
     sudo pacman -S --noconfirm xfce4 xfce4-goodies networkmanager
-
-
     sudo systemctl enable NetworkManager
 }
 
@@ -83,9 +86,7 @@ install_cinnamon() {
     echo "Installing Cinnamon and applications..."
     sudo pacman -S --needed --noconfirm xorg sddm
     sudo systemctl enable sddm
-
     sudo pacman -S --noconfirm cinnamon nemo-fileroller networkmanager
-
     sudo systemctl enable NetworkManager
 }
 
@@ -152,30 +153,36 @@ octopi_installation() {
 # Function to prompt for Desktop Environment selection
 prompt_de_selection() {
     echo -e "${YELLOW}Which Desktop Environment do you want to install?${NC}"
-    echo -e "1) KDE Plasma ${GREEN}(recommended)${NC}"
-    echo -e "2) GNOME ${YELLOW}(experimental)${NC}"
-    echo -e "3) XFCE ${YELLOW}(experimental)${NC}"
-    echo -e "4) Cinnamon ${YELLOW}(experimental)${NC}"
-    echo -e "5) None"
+    echo -e "1) KDE and a minimal set of applications"
+    echo -e "2) KDE and all of its applications"
+    echo -e "3) GNOME"
+    echo -e "4) XFCE"
+    echo -e "5) Cinnamon"
+    echo -e "6) None"
     read -r de_choice
 
     case $de_choice in
         1)
+            echo -e "You have selected KDE and a minimal set of applications."
             install_kde
             ;;
         2)
-            echo -e "You have selected GNOME (experimental)."
-            install_gnome
+            echo -e "You have selected KDE and all of its applications."
+            install_kde_full
             ;;
         3)
-            echo -e "You have selected XFCE (experimental)."
-            install_xfce
+            echo -e "You have selected GNOME."
+            install_gnome
             ;;
         4)
-            echo -e "You have selected Cinnamon (experimental)."
-            install_cinnamon
+            echo -e "You have selected XFCE."
+            install_xfce
             ;;
         5)
+            echo -e "You have selected Cinnamon."
+            install_cinnamon
+            ;;
+        6)
             echo -e "${RED}No Desktop Environment will be installed.${NC}"
             ;;
         *)
